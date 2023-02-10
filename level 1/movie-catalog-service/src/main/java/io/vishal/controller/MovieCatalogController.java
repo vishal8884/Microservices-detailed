@@ -1,5 +1,6 @@
 package io.vishal.controller;
 
+import java.lang.reflect.ParameterizedType; //used when we need to define List class in .class
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import io.vishal.models.CatalogItem;
 import io.vishal.models.Movie;
 import io.vishal.models.Rating;
+import io.vishal.models.UserRating;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -23,14 +25,19 @@ public class MovieCatalogController {
 	@Autowired
 	RestTemplate restTemplate;
 
+	/**
+	 * Controller needs to return Mono/Flux object to make this API truly Async when using Webclient
+	 * @param userId
+	 * @return
+	 */
 	@RequestMapping("/{userId}")
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 		
-		List<Rating> ratings = Arrays.asList(new Rating("1", 4),new Rating("2", 7));
+		UserRating userRating = restTemplate.getForObject("http://localhost:8082/ratings/users/"+userId,UserRating.class);
 		List<CatalogItem> catalogItemsList = new ArrayList<>();
 		
 		
-		for(Rating rating : ratings) {
+		for(Rating rating : userRating.getUserRating()) {
 			Movie movie = restTemplate.getForObject("http://localhost:8081/movies/"+rating.getMovieId(), Movie.class);
 			catalogItemsList.add(new CatalogItem(movie.getName(), "test2", rating.getRating()));
 		}
