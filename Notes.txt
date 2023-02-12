@@ -13,6 +13,9 @@ Why hardcoing URL is bad
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+                      EUREKA
+
+
 Client side discovery server
 
 
@@ -22,3 +25,23 @@ Client   -> Discovery Server ->   service 1, service 2, service 3
 
 
 Server side discovery server
+
+
+-> Eureka enables catchign by default
+-> We need to give app name in property file of each microservices from there euroka will pick up and register the services
+
+   @Autowired
+-> private DiscoverClient client;   -> this gives the all instances which uses same eureka from the microservice.  
+
+
+
+
+
+
+             Negetive cases at Eureka Service
+
+-> What if microservice goes down??               Ans ->  Eureka server gets heart beats from each microservices (if no heart beat in a while it ends that)
+-> What if Eureka server goes down ??             Ans ->  Each client will have a cache from which it will look
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
