@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.discovery.DiscoveryClient;
+import com.netflix.discovery.shared.Application;
+
 import io.vishal.models.CatalogItem;
 import io.vishal.models.Movie;
 import io.vishal.models.Rating;
@@ -23,7 +26,10 @@ import lombok.AllArgsConstructor;
 public class MovieCatalogController {
 	
 	@Autowired
-	RestTemplate restTemplate;
+	private RestTemplate restTemplate;
+	
+	@Autowired
+	private DiscoveryClient discoveryClient;   //We can do advanced load balancing using this
 
 	/**
 	 * Controller needs to return Mono/Flux object to make this API truly Async when using Webclient
@@ -32,13 +38,12 @@ public class MovieCatalogController {
 	 */
 	@RequestMapping("/{userId}")
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
-		
-		UserRating userRating = restTemplate.getForObject("http://localhost:8082/ratings/users/"+userId,UserRating.class);
+		UserRating userRating = restTemplate.getForObject("http://ratings-data-service/ratings/users/"+userId,UserRating.class);  //This calls from eureka server so we hive ratings-data-service host instead of localhost:8082
 		List<CatalogItem> catalogItemsList = new ArrayList<>();
 		
 		
 		for(Rating rating : userRating.getUserRating()) {
-			Movie movie = restTemplate.getForObject("http://localhost:8081/movies/"+rating.getMovieId(), Movie.class);
+			Movie movie = restTemplate.getForObject("http://movie-info-service/movies/"+rating.getMovieId(), Movie.class);
 			catalogItemsList.add(new CatalogItem(movie.getName(), "test2", rating.getRating()));
 		}
 		

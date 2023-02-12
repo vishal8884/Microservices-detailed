@@ -3,6 +3,7 @@ package io.vishal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +17,7 @@ public class MovieCatalogServiceApplication {
 	 * bean is producer and autowired is consumer
 	 */
 	@Bean
+	@LoadBalanced //URL which is given is a hint which service needs to be discovered
 	public RestTemplate getRestTempleate() {
 		return new RestTemplate();
 	}
