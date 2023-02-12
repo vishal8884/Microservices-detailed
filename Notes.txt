@@ -1,0 +1,24 @@
+1) Because WebClient is immutable it is thread-safe
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Why hardcoing URL is bad
+
+1) Changes required code updates
+2) Dynamic URLs in the cloud
+3) Load balancing
+4) Multiple environments
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Client side discovery server
+
+
+Client   -> Discovery Server ->   service 1, service 2, service 3
+
+
+
+
+Server side discovery server
