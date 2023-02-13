@@ -1,0 +1,85 @@
+Fault Tolerance -> If there is fault how much tolarance does the system have for specific fault.
+Example if one microservice is down what will be the impact here for other parts? 
+
+
+Resiliance -> how many faults can a system tolarate before its brought down?
+
+
+most of the time both goes hand in hand
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	
+
+                             Problems with microservices
+
+
+1) What if microservice goes down which is registerd with eureka?
+Ans) have multiple instances of each microservice which acts as backup
+
+
+2) What if microservice is slow?
+Ans) configure timout in webclient	
+
+This solves the problem as long as we get request in less frequency
+what about more frequency ..how to handle??
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                              Circuit breaker pattern
+
+its basic function is to intrupt the current flow after a fault is detected. (unlike a fuse which operates once and then must be replaced, a 
+circuit breaker can replace either manually or automatically to resume normal operation.
+
+
+1) Detect something is wrong with microservice
+2) Take temporary steps to avoid the situation getting worse( just dont send the requests to that microservice for a while.
+3) Deactivate the problem component so it doesnt affect the subsequent steps
+
+
+
+                            when does circuit trip?
+
+1) last n requests failed??
+2) how many of last n request should fail to break the circuit?
+3) Timeout duration
+
+
+                            when does circuit untrip?
+
+1) how long to wait to try the microservice again after the circuit is tripped? (sleep window)
+
+
+
+                            Fallback with CB,
+
+things we can do
+
+1) Throw an error
+2) return fallback "default" response. (hardcoded)
+3) save previous response in cache and use it when possible
+
+
+
+                           Benifits of CB
+
+1) Fail fast
+2) fall back functionality
+3) automatic recovery
+
+
+
+
+
+
+
+
+
+
+
+
