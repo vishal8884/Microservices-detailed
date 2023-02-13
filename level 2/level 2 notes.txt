@@ -74,6 +74,16 @@ things we can do
 
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                 BULKHEAD pattern
+
+1)   req1
+     req2
+     req3   each microservice has multiuple theread pools if req1 and req2 is slow ...req3 will not be affected as its in seperate thread pool
+
+
+
 
 
 
